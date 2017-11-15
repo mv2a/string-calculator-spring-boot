@@ -23,7 +23,7 @@ public class CalculatorController {
         this.calculationService = calculationService;
     }
 
-    @PostMapping(path = "/calculator/string")
+    @PostMapping(path = "/calculator/string", consumes="text/plain", produces="text/plain")
     public ResponseEntity<Object> calculate(
             @ApiParam(name = "input", value = "The input expression, comma separated integers."
                     + "No negative numbers allowed. Numbers greater than 1000 will be ignored.")
@@ -35,3 +35,4 @@ public class CalculatorController {
         }
     }
 }
+

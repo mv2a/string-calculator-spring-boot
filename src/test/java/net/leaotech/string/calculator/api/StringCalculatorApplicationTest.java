@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,28 +42,28 @@ public class StringCalculatorApplicationTest {
 
     @Test
     public void createNewCalculation() throws Exception {
-        this.mockMvc.perform(post("/calculator/string").content("2,3"))
+        this.mockMvc.perform(post("/calculator/string").content("2,3").contentType(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(content().string("5"));
     }
 
     @Test
     public void shouldNotProcessEmptyContent() throws Exception {
-        this.mockMvc.perform(post("/calculator/string"))
+        this.mockMvc.perform(post("/calculator/string").contentType(MediaType.TEXT_PLAIN))
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
 
     @Test
     public void shoulCaptureExceptionMessagesInTheResponse() throws Exception {
-        this.mockMvc.perform(post("/calculator/string").content("ab"))
+        this.mockMvc.perform(post("/calculator/string").content("ab").contentType(MediaType.TEXT_PLAIN))
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(content().string("Invalid input, only numbers allowed"));
 
-        this.mockMvc.perform(post("/calculator/string").content("-3,5"))
+        this.mockMvc.perform(post("/calculator/string").content("-3,5").contentType(MediaType.TEXT_PLAIN))
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(content().string("Negative number are not allowed"));
 
-        this.mockMvc.perform(post("/calculator/string").content("-1"))
+        this.mockMvc.perform(post("/calculator/string").content("-1").contentType(MediaType.TEXT_PLAIN))
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(content().string("Negative number are not allowed"));
     }
